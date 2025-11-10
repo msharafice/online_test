@@ -76,11 +76,11 @@ WSGI_APPLICATION = 'online_test.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'online_test',      # اسم دیتابیس که در pgAdmin ساختی
-        'USER': 'postgres',        # یوزری که ساختی
-        'PASSWORD': 'admin',      # رمز عبور
-        'HOST': 'localhost',        # چون دیتابیس روی همین سیستمته
-        'PORT': '5432',             # پورت پیش‌فرض PostgreSQL
+        'NAME': 'online_test',    
+        'USER': 'postgres',       
+        'PASSWORD': 'admin',      
+        'HOST': 'localhost',        
+        'PORT': '5432',             
     }
 }
 
