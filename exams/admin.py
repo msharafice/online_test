@@ -1,8 +1,4 @@
 from django.contrib import admin
-from .models import Quiz, Question, Choice, UserAnswer, QuizResult
+from .models import Exam
 
-admin.site.register(Quiz)
-admin.site.register(Question)
-admin.site.register(Choice)
-admin.site.register(UserAnswer)
-admin.site.register(QuizResult)
+admin.site.register(Exam)
