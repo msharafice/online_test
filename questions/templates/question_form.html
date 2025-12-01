@@ -1,0 +1,19 @@
+{% extends "index.html" %}
+
+{% block title %}
+    {% if is_edit %}ویرایش سوال{% else %}اضافه کردن سوال{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<h1>{% if is_edit %}ویرایش سوال{% else %}اضافه کردن سوال{% endif %} - آزمون: {{ exam.title }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% if is_edit %}ذخیره تغییرات{% else %}افزودن سوال{% endif %}</button>
+</form>
+
+<a href="{% url 'exam_questions' exam.id %}">بازگشت به سوالات آزمون</a>
+
+{% endblock %}

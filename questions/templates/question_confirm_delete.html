@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+
+{% block title %}حذف سوال{% endblock %}
+
+{% block content %}
+
+<h1>حذف سوال</h1>
+<p>آیا مطمئن هستید که می‌خواهید این سوال را حذف کنید؟</p>
+<p>{{ question.text }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">حذف شود</button>
+    <a href="{% url 'exam_questions' question.exam.id %}">انصراف</a>
+</form>
+
+{% endblock %}

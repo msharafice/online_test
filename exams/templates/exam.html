@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+
+{% block title %}لیست آزمون‌ها{% endblock %}
+
+{% block content %}
+
+<h1>لیست آزمون‌ها</h1>
+
+<a href="{% url 'add_exam' %}" style="margin-bottom: 20px; display:inline-block;">افزودن آزمون جدید</a>
+
+{% if exams %}
+    {% for t in exams %}
+        <div class="exam" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+            <h2>
+                <!-- لینک به سوالات آزمون -->
+                <a href="{% url 'exam_questions' t.pk %}">{{ t.title }}</a>
+            </h2>
+            <p>{{ t.subject }}</p>
+            
+            <!-- دکمه ویرایش -->
+            <a href="{% url 'edit_exam' t.pk %}">ویرایش</a>
+
+            <!-- دکمه حذف -->
+            <form method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="delete_id" value="{{ t.pk }}">
+                <button type="submit" onclick="return confirm('آیا مطمئن هستید که می‌خواهید این آزمون را حذف کنید؟')">حذف</button>
+            </form>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>هیچ آزمونی وجود ندارد.</p>
+{% endif %}
+
+{% endblock %}

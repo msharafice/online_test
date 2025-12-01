@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+
+{% block title %}سوالات {{ exam.title }}{% endblock %}
+
+{% block content %}
+
+<h1>سوالات آزمون: {{ exam.title }}</h1>
+<p>موضوع: {{ exam.subject }}</p>
+
+<!-- دکمه اضافه کردن سوال -->
+<a href="{% url 'add_question' exam.id %}" >
+    افزودن سوال جدید
+</a>
+
+{% if questions %}
+    {% for q in questions %}
+        <div class="question" >
+            <h3>سوال {{ forloop.counter }}: {{ q.text }}</h3>
+            <p>نوع سوال: {{ q.get_question_type_display }}</p>
+            <p>نمره: {{ q.score }}</p>
+
+            <!-- نمایش گزینه‌ها -->
+            {% if q.choices.all %}
+                <ul>
+                {% for choice in q.choices.all %}
+                    <li>{{ choice.text }} {% if choice.is_correct %}(صحیح){% endif %}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+
+            <a href="{% url 'edit_question' q.pk %}" >ویرایش</a>
+            <a href="{% url 'delete_question' q.pk %}" >حذف</a>
+
+        </div>
+    {% endfor %}
+{% else %}
+    <p>سوالی برای این آزمون وجود ندارد.</p>
+{% endif %}
+
+<a href="{% url 'exam_list' %}">بازگشت</a>
+
+{% endblock %}
