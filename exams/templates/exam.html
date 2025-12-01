@@ -13,19 +13,21 @@
         <div class="exam" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
             <h2>
                 <!-- لینک به سوالات آزمون -->
-                <a href="{% url 'exam_questions' t.pk %}">{{ t.title }}</a>
+                <a href="{% url 'exam_questions' t.pk %}" style="text-decoration: none;">{{ t.title }}</a>
             </h2>
             <p>{{ t.subject }}</p>
             
             <!-- دکمه ویرایش -->
-            <a href="{% url 'edit_exam' t.pk %}">ویرایش</a>
+           <div style="display: flex;justify-content: space-between; align-items: center; max-width: 10%;">
+             <a href="{% url 'edit_exam' t.pk %}" style="text-decoration: none;border: 1px solid #000;padding: 1px 4px;color: black; border-radius: 4px;background-color: green; color: white; font-size: 18px;">ویرایش</a>
 
             <!-- دکمه حذف -->
             <form method="post" style="display:inline;">
                 {% csrf_token %}
                 <input type="hidden" name="delete_id" value="{{ t.pk }}">
-                <button type="submit" onclick="return confirm('آیا مطمئن هستید که می‌خواهید این آزمون را حذف کنید؟')">حذف</button>
+                <button type="submit" onclick="return confirm('آیا مطمئن هستید که می‌خواهید این آزمون را حذف کنید؟')" style="background: none;border: 1px solid #000;border-radius: 4px;padding: 2px 3px; background-color: red;color: white; font-size: 18px;">حذف</button>
             </form>
+           </div>
         </div>
     {% endfor %}
 {% else %}
