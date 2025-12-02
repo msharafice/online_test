@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block title %}
-    {% if is_edit %}ویرایش سوال{% else %}اضافه کردن سوال{% endif %}
+    {% if is_edit %}ویرایش سوال{% else %}افزودن سوال{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -11,17 +11,30 @@
         color: black;
         border: none;
         background-color: transparent;
+        font-size: 20px;
         cursor: pointer;
     }
 </style>
-<h1>{% if is_edit %}ویرایش سوال{% else %}اضافه کردن سوال{% endif %} - آزمون: {{ exam.title }}</h1>
+<h2>{% if is_edit %}ویرایش سوال{% else %}افزودن سوال{% endif %}</h2>
 
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">{% if is_edit %}ذخیره تغییرات{% else %}افزودن سوال{% endif %}</button>
-    <a href="{% url 'exam_questions' exam.id %}">بازگشت به سوالات آزمون</a>
+
+    {% if formset %}
+        <h3>گزینه‌ها:</h3>
+        {{ formset.management_form }}
+        {% for f in formset %}
+            <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+                {{ f.as_p }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div style="display: flex;justify-content: space-between;align-items: center;width: 35%;margin: auto;margin-top: 40px;margin-bottom: 50px;"><button type="submit">ذخیره</button>
+    <a href="{% url 'exam_questions' exam.id %}">بازگشت</a></div>
 </form>
+
 
 
 {% endblock %}
