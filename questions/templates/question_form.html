@@ -5,15 +5,23 @@
 {% endblock %}
 
 {% block content %}
-
+<style>
+    button,a{
+        text-decoration: none;
+        color: black;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
+</style>
 <h1>{% if is_edit %}ویرایش سوال{% else %}اضافه کردن سوال{% endif %} - آزمون: {{ exam.title }}</h1>
 
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">{% if is_edit %}ذخیره تغییرات{% else %}افزودن سوال{% endif %}</button>
+    <a href="{% url 'exam_questions' exam.id %}">بازگشت به سوالات آزمون</a>
 </form>
 
-<a href="{% url 'exam_questions' exam.id %}">بازگشت به سوالات آزمون</a>
 
 {% endblock %}

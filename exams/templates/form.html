@@ -5,15 +5,30 @@
 {% endblock %}
 
 {% block content %}
-
+<style>
+    .button,.a {
+        border: none;
+        color: black;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 400;
+        background-color: transparent;
+    }
+    
+</style>
 <h1>{% if is_edit %}ویرایش آزمون{% else %}افزودن آزمون{% endif %}</h1>
 
-<form method="post">
+<div><form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">{% if is_edit %}ذخیره تغییرات{% else %}اضافه کردن{% endif %}</button>
+    <div style="display: flex;justify-content: space-between; align-items: end;width: 30%;margin-top: 50px;">
+        <button type="submit" class="button">{% if is_edit %}ذخیره تغییرات{% else %}اضافه کردن{% endif %}</button>
+    <a href="{% url 'exam_list' %}" class="a" style="text-decoration: none;">بازگشت به لیست</a>
+    </div>
+    
+</div>
 </form>
 
-<a href="{% url 'exam_list' %}">بازگشت به لیست</a>
+
 
 {% endblock %}

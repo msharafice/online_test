@@ -3,15 +3,27 @@
 {% block title %}سوالات {{ exam.title }}{% endblock %}
 
 {% block content %}
-
-<h1>سوالات آزمون: {{ exam.title }}</h1>
-<p>موضوع: {{ exam.subject }}</p>
+<style>
+    a {
+        color: black;
+        text-decoration: none;
+    }
+    .exam-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 70%;
+        margin: auto;
+    }
+</style>
+<h1 style="margin-left: 8px;">سوالات آزمون: {{ exam.title }}</h1>
+<p style="margin-left: 26px;">موضوع: {{ exam.subject }}</p>
 
 <!-- دکمه اضافه کردن سوال -->
-<a href="{% url 'add_question' exam.id %}" >
+<a href="{% url 'add_question' exam.id %}" style="float: right;">
     افزودن سوال جدید
 </a>
-
+<div class="exam-box">
 {% if questions %}
     {% for q in questions %}
         <div class="question" >
@@ -27,16 +39,16 @@
                 {% endfor %}
                 </ul>
             {% endif %}
-
-            <a href="{% url 'edit_question' q.pk %}" >ویرایش</a>
-            <a href="{% url 'delete_question' q.pk %}" >حذف</a>
+            <div style="width: 100%;display: flex;justify-content: space-between;align-items: center;"><a href="{% url 'edit_question' q.pk %}" >ویرایش</a>
+            <a href="{% url 'delete_question' q.pk %}" >حذف</a></div>
+            
 
         </div>
     {% endfor %}
 {% else %}
     <p>سوالی برای این آزمون وجود ندارد.</p>
 {% endif %}
-
-<a href="{% url 'exam_list' %}">بازگشت</a>
+</div>
+<a href="{% url 'exam_list' %}" style="float: right;margin-top: 40px;margin-right: 20px;">بازگشت</a>
 
 {% endblock %}

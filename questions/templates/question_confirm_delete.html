@@ -3,7 +3,15 @@
 {% block title %}حذف سوال{% endblock %}
 
 {% block content %}
-
+<style>
+    button,a{
+        text-decoration: none;
+        color: black;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
+</style>
 <h1>حذف سوال</h1>
 <p>آیا مطمئن هستید که می‌خواهید این سوال را حذف کنید؟</p>
 <p>{{ question.text }}</p>
