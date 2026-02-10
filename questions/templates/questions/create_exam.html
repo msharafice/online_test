@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Create Exam{% endblock %}
+
+{% block extra_css %}
+<style>
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card {
+    background: white;
+    width: 480px;
+    max-width: 95%;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .back {
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+
+  form p { margin-bottom: 12px; }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <h2>Create Exam</h2>
+
+    <a class="back" href="{% url 'questions:dashboard' %}">← Back to Dashboard</a>
+
+    {% if form.errors %}
+      <div class="errors">{{ form.errors }}</div>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Create</button>
+    </form>
+  </div>
+{% endblock %}

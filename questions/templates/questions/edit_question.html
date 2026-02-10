@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Edit Question{% endblock %}
+
+{% block extra_css %}
+<style>
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card {
+    background: white;
+    width: 600px;
+    max-width: 95%;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .back {
+    display: block;
+    text-align: center;
+    margin-bottom: 18px;
+    font-weight: 700;
+  }
+
+  h3 {
+    margin: 20px 0 10px;
+    color: #374151;
+  }
+
+  form p { margin-bottom: 12px; }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .choice-block {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 15px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <h2>Edit Question</h2>
+
+    <a class="back" href="{% url 'questions:exam_questions' question.exam.id %}">
+      ← Back to Exam
+    </a>
+
+    {% if question_form.errors %}
+      <div class="errors">{{ question_form.errors }}</div>
+    {% endif %}
+
+    {% if question.question_type == 'test' %}
+      {% if formset.non_form_errors %}
+        <div class="errors">{{ formset.non_form_errors }}</div>
+      {% endif %}
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+
+      {{ question_form.as_p }}
+
+      {% if question.question_type == 'test' %}
+        <h3>Choices</h3>
+        {{ formset.management_form }}
+
+        {% for form in formset %}
+          {% if form.errors %}
+            <div class="errors">{{ form.errors }}</div>
+          {% endif %}
+          <div class="choice-block">
+            {{ form.as_p }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
+{% endblock %}

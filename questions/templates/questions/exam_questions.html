@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}{{ exam.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+
+  .actions-top {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .add-btn {
+    display: inline-block;
+    padding: 10px 16px;
+    background: #2563eb;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .add-btn:hover {
+    background: #1d4ed8;
+  }
+
+  .attempts-btn {
+    display: inline-block;
+    padding: 10px 16px;
+    background: #10b981;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .attempts-btn:hover {
+    background: #059669;
+  }
+
+  .question-list li {
+    list-style: none;
+    background: #f9fafb;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .q-type {
+    color: #6b7280;
+    font-size: 14px;
+    margin-left: auto;
+    margin-right: 10px;
+  }
+
+  .publish {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 16px;
+    background: #10b981;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .publish:hover {
+    background: #059669;
+  }
+
+  .published {
+    margin-top: 15px;
+    font-weight: 600;
+    color: #16a34a;
+  }
+
+  .mini {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .danger {
+    color: #ef4444;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <h2>
+    <a href="{% url 'questions:dashboard' %}">{{ exam.title }}</a>
+  </h2>
+
+  <div class="actions-top">
+    <a class="add-btn" href="{% url 'questions:create_question' exam.id %}">
+      + Add Question
+    </a>
+
+    <a class="attempts-btn" href="{% url 'exams:exam_attempts' exam.id %}">
+      View Attempts
+    </a>
+  </div>
+
+  <ul class="question-list">
+    {% for q in exam.questions.all %}
+      <li>
+        <span>{{ q.text }}</span>
+        <span class="q-type">{{ q.question_type }}</span>
+
+        <a class="mini" href="{% url 'questions:edit_question' q.id %}">✏️ Edit</a>
+        <a class="mini danger"
+           href="{% url 'questions:delete_question' q.id %}"
+           onclick="return confirm('Are you sure?')">🗑 Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% if not exam.is_published %}
+    <a class="publish" href="{% url 'questions:publish_exam' exam.id %}">
+      Publish Exam
+    </a>
+  {% else %}
+    <p class="published">✅ Published</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Attempt Review{% endblock %}
+
+{% block extra_css %}
+<style>
+  h2 {
+    margin-bottom: 10px;
+  }
+
+  .student {
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: #374151;
+  }
+
+  .answer-card {
+    background: #f9fafb;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .answer-card strong {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .correct { color: #16a34a; font-weight: 700; }
+  .wrong { color: #dc2626; font-weight: 700; }
+
+  .grade-box {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  input[type="number"] {
+    width: 160px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <h2>
+    <a href="{% url 'questions:dashboard' %}">{{ attempt.exam.title }}</a>
+  </h2>
+
+  <p class="student">Student: {{ attempt.student.username }}</p>
+
+  {% for ans in answers %}
+    <div class="answer-card">
+      <strong>{{ ans.question.text }}</strong>
+
+      {% if ans.question.question_type == 'test' %}
+        <p>Student Answer: {{ ans.selected_choice.text }}</p>
+        <p>Correct Answer: {{ ans.correct_choice.text }}</p>
+
+        {% if ans.is_correct %}
+          <p class="correct">✔ Correct</p>
+        {% else %}
+          <p class="wrong">✘ Wrong</p>
+        {% endif %}
+      {% else %}
+        <p>Student Answer:</p>
+
+        {% if ans.descriptive_answer %}
+          <p>{{ ans.descriptive_answer|linebreaks }}</p>
+        {% else %}
+          <p>—</p>
+        {% endif %}
+
+        {% if ans.uploaded_file %}
+          <p>
+            📎 File:
+            <a href="{{ ans.uploaded_file.url }}" target="_blank">View / Download</a>
+          </p>
+        {% endif %}
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  <form method="post" class="grade-box">
+    {% csrf_token %}
+    <label>Score:</label>
+    <input
+      type="number"
+      step="0.5"
+      name="score"
+      value="{{ grade.score|default_if_none:'' }}"
+    />
+    <button type="submit">Save Grade</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}My Exams{% endblock %}
+
+{% block extra_css %}
+<style>
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .logout-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .logout-btn:hover {
+    background: #dc2626;
+  }
+
+  .create-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 16px;
+    background: #2563eb;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .create-btn:hover {
+    background: #1d4ed8;
+  }
+
+  .exam-list li,
+  .attempt-list li {
+    list-style: none;
+    background: #f9fafb;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .actions a {
+    margin-left: 10px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .manage { color: #2563eb; }
+  .delete { color: #ef4444; }
+  .attempts-link { color: #10b981; }
+
+  .actions a:hover {
+    text-decoration: underline;
+  }
+
+  h3 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+
+  .empty {
+    color: #6b7280;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="header">
+    <h2>My Exams</h2>
+
+    <form action="{% url 'users:logout' %}" method="post">
+      {% csrf_token %}
+      <button class="logout-btn" type="submit">Logout</button>
+    </form>
+  </div>
+
+  <a class="create-btn" href="{% url 'questions:create_exam' %}">
+    + Create Exam
+  </a>
+
+  <ul class="exam-list">
+    {% for exam in exams %}
+      <li>
+        <span>{{ exam.title }}</span>
+        <div class="actions">
+          <a class="manage" href="{% url 'questions:exam_questions' exam.id %}">Manage</a>
+          <a class="attempts-link" href="{% url 'exams:exam_attempts' exam.id %}">Attempts</a>
+          <a class="delete" href="{% url 'questions:delete_exam' exam.id %}">Delete</a>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <h3>Student Submissions</h3>
+
+  {% if attempts %}
+    <ul class="attempt-list">
+      {% for attempt in attempts %}
+        <li>
+          <span>{{ attempt.exam.title }} — {{ attempt.student.username }}</span>
+          <div class="actions">
+            <a class="manage" href="{% url 'exams:grade_exam' attempt.id %}">Review</a>
+            <a class="attempts-link" href="{% url 'exams:attempt_detail' attempt.id %}">Details</a>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">No student submissions yet.</p>
+  {% endif %}
+{% endblock %}

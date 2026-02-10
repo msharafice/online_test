@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+<<<<<<< HEAD
 from .models import Question, Choice
 from .forms import QuestionForm, ChoiceFormSet
 from exams.models import Exam
@@ -105,3 +106,141 @@ def question_form(request, exam_id, pk=None):
         "exam": exam,
         "question": question,
     })
+=======
+from django import forms
+import logging
+
+from .models import Exam, Question, Choice
+from .forms import ExamForm, QuestionForm, ChoiceForm
+from .decorators import teacher_required
+from exams.models import ExamAttempt
+
+logger = logging.getLogger("questions")
+
+
+@teacher_required
+def teacher_dashboard(request):
+    exams = Exam.objects.filter(teacher=request.user)
+
+    attempts = (
+        ExamAttempt.objects
+        .filter(exam__teacher=request.user)
+        .select_related("exam", "student")
+    )
+
+    return render(request, "questions/dashboard.html", {
+        "exams": exams,
+        "attempts": attempts
+    })
+
+
+@teacher_required
+def create_exam(request):
+    form = ExamForm(request.POST or None)
+    if form.is_valid():
+        exam = form.save(commit=False)
+        exam.teacher = request.user
+        exam.save()
+        return redirect("questions:dashboard")
+    return render(request, "questions/create_exam.html", {"form": form})
+
+
+@teacher_required
+def delete_exam(request, exam_id):
+    exam = get_object_or_404(Exam, id=exam_id, teacher=request.user)
+    exam.delete()
+    return redirect("questions:dashboard")
+
+
+@teacher_required
+def exam_questions(request, exam_id):
+    exam = get_object_or_404(Exam, id=exam_id, teacher=request.user)
+    return render(request, "questions/exam_questions.html", {"exam": exam})
+
+
+@teacher_required
+def create_question(request, exam_id):
+    exam = get_object_or_404(Exam, id=exam_id, teacher=request.user)
+
+    form = QuestionForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        question = form.save(commit=False)
+        question.exam = exam
+        question.save()
+        return redirect("questions:add_choices", question_id=question.id)
+
+    # ✅ مهم: exam رو پاس می‌دیم تا توی template exam.id داشته باشی
+    return render(request, "questions/create_question.html", {
+        "form": form,
+        "exam": exam,
+    })
+
+
+@teacher_required
+def add_choices(request, question_id):
+    question = get_object_or_404(Question, id=question_id, exam__teacher=request.user)
+
+    if question.question_type == "descriptive":
+        return redirect("questions:exam_questions", exam_id=question.exam.id)
+
+    forms_list = [ChoiceForm(request.POST or None, prefix=str(i)) for i in range(4)]
+
+    if request.method == "POST":
+        if all(f.is_valid() for f in forms_list):
+            for f in forms_list:
+                choice = f.save(commit=False)
+                choice.question = question
+                choice.save()
+            return redirect("questions:exam_questions", exam_id=question.exam.id)
+
+    return render(request, "questions/add_choices.html", {
+        "forms": forms_list,
+        "question": question
+    })
+
+
+@teacher_required
+def edit_question(request, question_id):
+    question = get_object_or_404(Question, id=question_id, exam__teacher=request.user)
+
+    question_form = QuestionForm(request.POST or None, instance=question)
+
+    ChoiceFormSet = forms.modelformset_factory(Choice, form=ChoiceForm, extra=0, can_delete=True)
+    formset = ChoiceFormSet(request.POST or None, queryset=question.choices.all())
+
+    if request.method == "POST":
+        if question_form.is_valid() and (question.question_type == "descriptive" or formset.is_valid()):
+            question_form.save()
+
+            if question.question_type == "test":
+                instances = formset.save(commit=False)
+                for obj in instances:
+                    obj.question = question
+                    obj.save()
+                for obj in formset.deleted_objects:
+                    obj.delete()
+
+            return redirect("questions:exam_questions", exam_id=question.exam.id)
+
+    return render(request, "questions/edit_question.html", {
+        "question_form": question_form,
+        "formset": formset,
+        "question": question
+    })
+
+
+@teacher_required
+def delete_question(request, question_id):
+    question = get_object_or_404(Question, id=question_id, exam__teacher=request.user)
+    exam_id = question.exam.id
+    question.delete()
+    return redirect("questions:exam_questions", exam_id=exam_id)
+
+
+@teacher_required
+def publish_exam(request, exam_id):
+    exam = get_object_or_404(Exam, id=exam_id, teacher=request.user)
+    exam.is_published = True
+    exam.save()
+    return redirect("questions:exam_questions", exam_id=exam.id)
+>>>>>>> faaf019 (last edit)

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block extra_css %}
+<style>
+  .login-card {
+    background: white;
+    padding: 40px;
+    width: 350px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #1f2937;
+  }
+
+  form p {
+    margin-bottom: 15px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .signup-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+  }
+
+  .signup-link a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="login-card">
+    <h2>Login</h2>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="signup-link">
+      <a href="{% url 'users:signup' %}">Signup</a>
+    </div>
+  </div>
+{% endblock %}

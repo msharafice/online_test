@@ -1,18 +1,53 @@
+<<<<<<< HEAD
 from django.forms import BaseInlineFormSet
 from django.forms import inlineformset_factory, BaseInlineFormSet
 from .models import Question, Choice
 from django import forms
 from .models import Question, Choice
 from django.forms import inlineformset_factory
+=======
+from django import forms
+from .models import Exam, Question, Choice
+
+
+class ExamForm(forms.ModelForm):
+    class Meta:
+        model = Exam
+        fields = ("title", "subject", "duration", "total_score", "start_time", "end_time")
+        widgets = {
+            "start_time": forms.DateInput(attrs={"type": "date"}),
+            "end_time": forms.DateInput(attrs={"type": "date"}),
+        }
+
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_time = cleaned_data.get('start_time')
+        end_time = cleaned_data.get('end_time')
+
+        if start_time and end_time and start_time > end_time:
+            raise forms.ValidationError(
+                'End date must be after start date.'
+            )
+
+        return cleaned_data
+
+>>>>>>> faaf019 (last edit)
 
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
+<<<<<<< HEAD
         fields = ['text', 'question_type', 'score'] 
+=======
+        fields = ('text', 'question_type')
+
+>>>>>>> faaf019 (last edit)
 
 class ChoiceForm(forms.ModelForm):
     class Meta:
         model = Choice
+<<<<<<< HEAD
         fields = ['text', 'is_correct']
 
 
@@ -43,3 +78,6 @@ ChoiceFormSet = inlineformset_factory(
     extra=4,
     can_delete=True
 )
+=======
+        fields = ('text', 'is_correct')
+>>>>>>> faaf019 (last edit)

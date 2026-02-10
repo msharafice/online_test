@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}{{ exam.title }} Attempts{% endblock %}
+
+{% block extra_css %}
+<style>
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  .attempt-list li {
+    list-style: none;
+    background: #f9fafb;
+    padding: 14px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .student {
+    font-weight: 800;
+  }
+
+  .action {
+    text-decoration: none;
+    background: #2563eb;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .action:hover {
+    background: #1d4ed8;
+    text-decoration: none;
+  }
+
+  .empty {
+    color: #6b7280;
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="top">
+    <h2>{{ exam.title }} — Attempts</h2>
+    <a href="{% url 'questions:exam_questions' exam.id %}">← Back to Exam</a>
+  </div>
+
+  {% if attempts %}
+    <ul class="attempt-list">
+      {% for a in attempts %}
+        <li>
+          <span class="student">{{ a.student.username }}</span>
+          <a class="action" href="{% url 'exams:attempt_detail' a.id %}">View & Grade</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">No attempts yet.</p>
+  {% endif %}
+{% endblock %}

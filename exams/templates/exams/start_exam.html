@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}{{ exam.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .timer {
+    font-weight: 800;
+    font-size: 18px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.12);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+  }
+
+  .question-card {
+    background: #f9fafb;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .question-card p {
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #111827;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    cursor: pointer;
+    color: #111827;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 90px;
+    resize: vertical;
+  }
+
+  .submit-row {
+    margin-top: 10px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="topbar">
+  <h2 style="color:#111827; margin:0;">{{ exam.title }}</h2>
+  <div class="timer">⏳ <span id="timerText">--:--</span></div>
+</div>
+
+<form id="examForm" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  {% for q in exam.questions.all %}
+  <div class="question-card">
+    <p>{{ q.text }}</p>
+
+    {% if q.question_type == 'test' %}
+    {% for c in q.choices.all %}
+    <label>
+      <input type="radio" name="question_{{ q.id }}" value="{{ c.id }}" {% if forloop.first %}required{% endif %}>
+      {{ c.text }}
+    </label>
+    {% endfor %}
+    {% else %}
+    <textarea name="text_question_{{ q.id }}" placeholder="Type your answer here..."></textarea>
+    <br><br>
+    <label>Upload file (optional):</label>
+    <input type="file" name="file_question_{{ q.id }}">
+    {% endif %}
+  </div>
+  {% endfor %}
+
+  <div class="submit-row">
+    <button type="submit">Submit</button>
+  </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    // حتما string default بده که TemplateSyntaxError نگیری
+    let remaining = parseInt("{{ remaining_seconds|default:'0' }}", 10);
+    if (isNaN(remaining)) remaining = 0;
+
+    const timerText = document.getElementById("timerText");
+    const form = document.getElementById("examForm");
+
+    function formatTime(s) {
+      const m = Math.floor(s / 60);
+      const r = s % 60;
+      return String(m).padStart(2, "0") + ":" + String(r).padStart(2, "0");
+    }
+
+    function tick() {
+      timerText.textContent = formatTime(remaining);
+
+      if (remaining <= 0) {
+        try { form.submit(); } catch (e) { }
+        return;
+      }
+
+      remaining -= 1;
+      setTimeout(tick, 1000);
+    }
+
+    tick();
+  })();
+</script>
+{% endblock %}

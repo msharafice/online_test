@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Available Exams{% endblock %}
+
+{% block extra_css %}
+<style>
+  h2 {
+    margin-bottom: 25px;
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .logout-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .logout-btn:hover {
+    background: #dc2626;
+  }
+
+  .search {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    min-width: 240px;
+  }
+
+  .search input {
+    flex: 1;
+  }
+
+  .exam-list li {
+    list-style: none;
+    background: #f9fafb;
+    padding: 14px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .start-btn {
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .start-btn:hover {
+    background: #1d4ed8;
+    text-decoration: none;
+  }
+
+  .status {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .status.green {
+    color: green;
+  }
+
+  .status.red {
+    color: red;
+  }
+
+  .status.orange {
+    color: orange;
+  }
+
+  .status.gray {
+    color: #6b7280;
+  }
+
+  .status.blue {
+    color: #2563eb;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>Available Exams</h2>
+
+<div class="topbar">
+  <form action="{% url 'users:logout' %}" method="post">
+    {% csrf_token %}
+    <button class="logout-btn" type="submit">Logout</button>
+  </form>
+
+  <form class="search" method="get">
+    <input type="text" name="q" placeholder="Search exam..." value="{{ query }}">
+    <button type="submit">Search</button>
+  </form>
+</div>
+
+<ul class="exam-list">
+  {% for item in exam_info %}
+  <li>
+    <div>
+      <strong>{{ item.exam.title }}</strong><br>
+      <small>
+        From {{ item.start_date|date:"Y-m-d" }}
+        to {{ item.end_date|date:"Y-m-d" }}
+      </small>
+    </div>
+
+    {% if item.can_start %}
+    <a class="start-btn" href="{% url 'exams:start_exam' item.exam.id %}">Start</a>
+    {% else %}
+    <span class="status {{ item.color }}">{{ item.status }}</span>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

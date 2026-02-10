@@ -1,0 +1,63 @@
+[2026-02-10 20:05:38,799] INFO users :: Login success user_id=1 username=mamadsh role=teacher
+[2026-02-10 20:05:38,858] INFO users :: Redirect teacher user_id=1
+[2026-02-10 20:05:38,920] INFO questions :: Teacher dashboard teacher_id=1 exams_count=1 attempts_count=1
+[2026-02-10 21:11:05,902] WARNING users :: Login failed username=mamadsh
+[2026-02-10 21:21:35,135] INFO users :: Signup created user_id=1 email=mohamad.sharafi83@gmail.com role=student
+[2026-02-10 21:21:51,417] INFO users :: Verification email sent user_id=1 email=mohamad.sharafi83@gmail.com
+[2026-02-10 21:22:03,261] INFO users :: Email verified user_id=1 email=mohamad.sharafi83@gmail.com username=st2
+[2026-02-10 21:22:03,319] INFO users :: Redirect student user_id=1
+[2026-02-10 21:22:03,400] INFO exams :: Student dashboard student_id=1 exams_count=0 query=
+[2026-02-10 21:24:13,269] INFO exams :: Student dashboard student_id=1 exams_count=0 query=
+[2026-02-10 21:24:20,096] INFO exams :: Student dashboard student_id=1 exams_count=0 query=
+[2026-02-10 21:24:21,802] INFO users :: Logout user_id=1 username=st2
+[2026-02-10 21:24:40,109] INFO users :: Signup created user_id=2 email=mohamad.sharafi.ce@gmail.com role=teacher
+[2026-02-10 21:26:57,107] WARNING users :: Signup form invalid
+[2026-02-10 21:27:09,976] INFO users :: Signup created user_id=3 email=sharafim836@gmail.com role=teacher
+[2026-02-10 21:27:20,670] INFO users :: Verification email sent user_id=3 email=sharafim836@gmail.com
+[2026-02-10 21:27:36,043] INFO users :: Email verified user_id=3 email=sharafim836@gmail.com username=mamadsh
+[2026-02-10 21:27:36,097] INFO users :: Redirect teacher user_id=3
+[2026-02-10 21:31:54,537] INFO users :: Login success user_id=3 username=mamadsh role=teacher
+[2026-02-10 21:31:54,594] INFO users :: Redirect teacher user_id=3
+[2026-02-10 21:31:54,649] INFO questions :: Teacher dashboard teacher_id=3 exams_count=0 attempts_count=0
+[2026-02-10 21:32:24,837] INFO questions :: Exam created teacher_id=3 exam_id=1 title=وب
+[2026-02-10 21:32:24,896] INFO questions :: Teacher dashboard teacher_id=3 exams_count=1 attempts_count=0
+[2026-02-10 21:32:27,894] INFO questions :: Exam questions page teacher_id=3 exam_id=1
+[2026-02-10 21:39:54,230] INFO users :: Logout user_id=3 username=mamadsh
+[2026-02-10 21:40:02,436] INFO users :: Login success user_id=1 username=st2 role=student
+[2026-02-10 21:40:02,493] INFO users :: Redirect student user_id=1
+[2026-02-10 21:40:02,555] INFO exams :: Student dashboard student_id=1 exams_count=1 query=
+[2026-02-10 21:40:05,698] INFO exams :: Exam page opened student_id=1 exam_id=1 remaining=1200
+[2026-02-10 21:40:34,687] INFO exams :: Auto-graded & emailed attempt_id=1 score=0.0
+[2026-02-10 21:40:34,688] INFO exams :: Exam submitted attempt_id=1 student_id=1 exam_id=1
+[2026-02-10 21:40:34,757] INFO exams :: Student dashboard student_id=1 exams_count=1 query=
+[2026-02-10 21:41:09,474] INFO users :: Logout user_id=1 username=st2
+[2026-02-10 21:41:12,146] INFO users :: Login success user_id=3 username=mamadsh role=teacher
+[2026-02-10 21:41:12,219] INFO users :: Redirect teacher user_id=3
+[2026-02-10 21:41:24,380] INFO exams :: Grade saved (grade_exam) teacher_id=3 attempt_id=1 score=5.0 max=5.0
+[2026-02-10 21:41:40,942] INFO users :: Logout user_id=3 username=mamadsh
+[2026-02-10 21:41:52,632] INFO users :: Login success user_id=1 username=st2 role=student
+[2026-02-10 21:41:52,692] INFO users :: Redirect student user_id=1
+[2026-02-10 21:41:52,757] INFO exams :: Student dashboard student_id=1 exams_count=1 query=
+[2026-02-10 21:45:19,045] INFO users :: Login success user_id=3 username=mamadsh role=teacher
+[2026-02-10 21:45:19,106] INFO users :: Redirect teacher user_id=3
+[2026-02-10 21:46:11,893] INFO users :: Login success user_id=1 username=st2 role=student
+[2026-02-10 21:46:11,948] INFO users :: Redirect student user_id=1
+[2026-02-10 21:46:12,011] INFO exams :: Student dashboard student_id=1 exams_count=2 query=
+[2026-02-10 21:46:13,797] INFO exams :: Exam page opened student_id=1 exam_id=2 remaining=240
+[2026-02-10 21:46:28,402] INFO exams :: Auto-graded & emailed attempt_id=2 score=0.0
+[2026-02-10 21:46:28,402] INFO exams :: Exam submitted attempt_id=2 student_id=1 exam_id=2
+[2026-02-10 21:46:28,468] INFO exams :: Student dashboard student_id=1 exams_count=2 query=
+[2026-02-10 22:38:33,715] INFO users :: Login success user_id=20 username=s1 role=student
+[2026-02-10 22:38:35,371] INFO users :: Login success user_id=21 username=t1 role=teacher
+[2026-02-10 22:38:37,056] INFO users :: Signup created user_id=25 email=new@test.com role=student
+[2026-02-10 22:38:37,057] INFO users :: Verification email sent user_id=25 email=new@test.com
+[2026-02-10 22:38:38,734] INFO users :: Signup created user_id=28 email=v@test.com role=student
+[2026-02-10 22:38:38,735] INFO users :: Verification email sent user_id=28 email=v@test.com
+[2026-02-10 22:38:38,744] INFO users :: Email verified user_id=28 email=v@test.com username=vuser
+[2026-02-10 22:41:03,040] INFO users :: Login success user_id=12 username=s1 role=student
+[2026-02-10 22:41:04,644] INFO users :: Login success user_id=13 username=t1 role=teacher
+[2026-02-10 22:41:06,392] INFO users :: Signup created user_id=17 email=new@test.com role=student
+[2026-02-10 22:41:11,503] INFO users :: Verification email sent user_id=17 email=new@test.com
+[2026-02-10 22:41:13,003] INFO users :: Signup created user_id=20 email=v@test.com role=student
+[2026-02-10 22:41:13,005] INFO users :: Verification email sent user_id=20 email=v@test.com
+[2026-02-10 22:41:13,015] INFO users :: Email verified user_id=20 email=v@test.com username=vuser
