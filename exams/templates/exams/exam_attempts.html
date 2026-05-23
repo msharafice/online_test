@@ -3,68 +3,211 @@
 
 {% block extra_css %}
 <style>
-  h2 {
-    margin-bottom: 20px;
-  }
-
-  .attempt-list li {
-    list-style: none;
-    background: #f9fafb;
-    padding: 14px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    display: flex;
+  .top{
+    display:flex;
     justify-content: space-between;
-    align-items: center;
+    align-items:flex-start;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .title-wrap{
+    display:flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  h2{
+    margin:0;
+    font-size: 24px;
+    font-weight: 900;
+    color:#0f172a; 
+    letter-spacing: .2px;
+    line-height: 1.2;
+  }
+
+  .meta{
+    margin:0;
+    display:flex;
     gap: 10px;
+    flex-wrap: wrap;
   }
 
-  .student {
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: #f1f5f9;         
+    border: 1px solid #e2e8f0;   
+    color:#334155;              
     font-weight: 800;
+    font-size: 13px;
   }
 
-  .action {
-    text-decoration: none;
-    background: #2563eb;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 14px;
+  .back{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color:#2563eb;
+    text-decoration:none;
+    font-weight: 900;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+    transition: .15s;
     white-space: nowrap;
   }
-
-  .action:hover {
-    background: #1d4ed8;
-    text-decoration: none;
+  .back:hover{
+    transform: translateY(-1px);
+    text-decoration:none;
+    background: #f8fafc;
   }
 
-  .empty {
-    color: #6b7280;
+  .btn-excel{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: #10b981;
+    border: none;
+    color: white;
+    text-decoration:none;
+    font-weight: 900;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+    transition: .15s;
+    white-space: nowrap;
+  }
+  .btn-excel:hover{
+    transform: translateY(-1px);
+    background: #059669;
+    text-decoration:none;
   }
 
-  .top {
-    display: flex;
+  .attempt-list{
+    margin:0;
+    padding:0;
+  }
+
+  .attempt-list li{
+    list-style:none;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 14px 32px rgba(0,0,0,0.08);
+    padding: 14px;
+    border-radius: 18px;
+    margin-bottom: 12px;
+    display:flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
+    align-items:center;
+    gap: 12px;
+    transition: .18s;
+  }
+
+  .attempt-list li:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.10);
+  }
+
+  .left{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    min-width: 220px;
+  }
+
+  .avatar{
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight: 900;
+    color:#0f172a;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    flex: 0 0 auto;
+  }
+
+  .student{
+    font-weight: 900;
+    color:#0f172a;
+  }
+
+  .sub{
+    color:#64748b;   
+    font-weight: 800;
+    font-size: 12px;
+    margin-top: 3px;
+  }
+
+  .action{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    text-decoration:none;
+    background: #2563eb;
+    color: white;
+    padding: 10px 12px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 900;
+    white-space: nowrap;
+    box-shadow: 0 14px 32px rgba(0,0,0,0.10);
+    transition: .15s;
+  }
+
+  .action:hover{
+    background:#1d4ed8;
+    transform: translateY(-1px);
+    text-decoration:none;
+  }
+
+  .empty{
+    color:#334155;
+    font-weight: 900;
+    margin-top: 10px;
   }
 </style>
 {% endblock %}
 
 {% block content %}
   <div class="top">
-    <h2>{{ exam.title }} — Attempts</h2>
-    <a href="{% url 'questions:exam_questions' exam.id %}">← Back to Exam</a>
+    <div class="title-wrap">
+      <h2>{{ exam.title }} — Attempts</h2>
+      <div class="meta">
+        {% if exam.subject %}<span class="chip">📚 {{ exam.subject }}</span>{% endif %}
+        <span class="chip">👥 {{ attempts|length }} attempts</span>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+      <a class="btn-excel" href="{% url 'exams:export_excel' exam.id %}">📥 Download Excel</a>
+      <a class="back" href="{% url 'questions:exam_questions' exam.id %}">← Back to Exam</a>
+    </div>
   </div>
 
   {% if attempts %}
     <ul class="attempt-list">
       {% for a in attempts %}
         <li>
-          <span class="student">{{ a.student.username }}</span>
-          <a class="action" href="{% url 'exams:attempt_detail' a.id %}">View & Grade</a>
+          <div class="left">
+            <div class="avatar">{{ a.student.username|slice:":1"|upper }}</div>
+            <div>
+              <div class="student">{{ a.student.username }}</div>
+              <div class="sub">
+                {% if a.finished_at %}Finished: {{ a.finished_at|date:"Y-m-d H:i" }}{% else %}Submitted{% endif %}
+              </div>
+            </div>
+          </div>
+
+          <a class="action" href="{% url 'exams:attempt_detail' a.id %}">🧾 View & Grade</a>
         </li>
       {% endfor %}
     </ul>

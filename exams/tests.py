@@ -79,21 +79,18 @@ def test_start_exam_creates_attempt_and_answers(self):
         attempt = ExamAttempt.objects.get(student=self.student, exam=self.exam)
         self.assertTrue(StudentAnswer.objects.filter(attempt=attempt).exists())
 
-        # اگر grade ساخته شده بود، بازه‌اش درست باشه
         g = Grade.objects.filter(attempt=attempt).first()
         if g is not None and g.score is not None:
             self.assertGreaterEqual(float(g.score), 0.0)
             self.assertLessEqual(float(g.score), float(self.exam.total_score))
 
     def test_teacher_can_view_attempts(self):
-        # دانشجو ارسال کند
         self._login_student()
         self.client.post(reverse("exams:start_exam", args=[self.exam.id]), {
             f"question_{self.q1.id}": str(self.c2.id),
         })
         attempt = ExamAttempt.objects.get(student=self.student, exam=self.exam)
 
-        # استاد لیست attempt ها
         self.client.logout()
         self._login_teacher()
 
@@ -106,7 +103,6 @@ def test_start_exam_creates_attempt_and_answers(self):
         اگر attempt_detail در urls هست، نمره ثبت میشه.
         اگر نداری، این تست رو حذف کن یا مسیر رو درست کن.
         """
-        # دانشجو ارسال کند
         self._login_student()
         self.client.post(reverse("exams:start_exam", args=[self.exam.id]), {
             f"question_{self.q1.id}": str(self.c2.id),
@@ -116,7 +112,6 @@ def test_start_exam_creates_attempt_and_answers(self):
         self.client.logout()
         self._login_teacher()
 
-        # اگر URL نداری، همین‌جا خط میده => یعنی باید از urls حذفش کنی یا view رو اضافه کنی
         res = self.client.post(reverse("exams:attempt_detail", args=[attempt.id]), {"score": "5"})
         self.assertIn(res.status_code, (302, 200))
 

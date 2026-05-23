@@ -33,10 +33,8 @@ class ExamAttempt(models.Model):
 
     started_at = models.DateTimeField(auto_now_add=True)
 
-    # ✅ برای ذخیره زمان پایان
     finished_at = models.DateTimeField(null=True, blank=True)
 
-    # ✅ منطقی‌تر: ابتدا False، بعد از ثبت پاسخ‌ها True
     is_finished = models.BooleanField(default=False)
 
     objects = ExamAttemptManager()

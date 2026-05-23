@@ -3,85 +3,279 @@
 
 {% block extra_css %}
 <style>
-  .topbar {
-    display: flex;
+  .topbar{
+    display:flex;
     justify-content: space-between;
-    align-items: center;
+    align-items:flex-start;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  .title-wrap{
+    display:flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .page-title{
+    margin:0;
+    font-size: 26px;
+    font-weight: 900;
+    color:#111827;
+    letter-spacing: .2px;
+    line-height: 1.2;
+  }
+
+  .subtitle{
+    margin:0;
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* ===== Colored Chips ===== */
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-weight: 900;
+    font-size: 12px;
+    color:#fff;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+    user-select: none;
+  }
+
+  .chip.subject{ background: linear-gradient(135deg,#2563eb,#1d4ed8); }
+  .chip.duration{ background: linear-gradient(135deg,#10b981,#059669); }
+  .chip.total{ background: linear-gradient(135deg,#7c3aed,#5b21b6); }
+
+  /* ===== Timer ===== */
+  .timer{
+    display:inline-flex;
+    align-items:center;
+    gap: 10px;
+    font-weight: 1000;
+    font-size: 16px;
+    padding: 14px 18px;
+    border-radius: 20px;
+    background: linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:#fff;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+    min-width: 180px;
+    justify-content:center;
+    transition: .3s;
+    user-select: none;
+  }
+
+  #timerText{ font-size: 20px; letter-spacing: 1px; }
+
+  .timer.warn{ background: linear-gradient(135deg,#f59e0b,#d97706); }
+
+  .timer.danger{
+    background: linear-gradient(135deg,#ef4444,#b91c1c);
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse{
+    0%{ transform: scale(1); }
+    50%{ transform: scale(1.05); }
+    100%{ transform: scale(1); }
+  }
+
+  .exam-form{ margin-top: 10px; }
+
+  .question-card{
+    background: rgba(255,255,255,0.96);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(229,231,235,0.9);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.10);
+  }
+
+  .q-head{
+    display:flex;
+    justify-content: space-between;
+    align-items:flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .q-text{
+    font-weight: 1000;
+    color:#111827;
+    line-height: 1.6;
+  }
+
+  .options{
+    display:flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .opt{
+    display:flex;
+    align-items:flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    background:#f9fafb;
+    cursor:pointer;
+    transition:.2s;
+  }
+
+  .opt:hover{
+    background:#eef2ff;
+    transform: translateY(-2px);
+  }
+
+  .opt input{ margin-top: 3px; }
+
+  .opt span{
+    font-weight: 800;
+    color:#111827;
+    line-height: 1.45;
+  }
+
+  /* ===== Descriptive fields ===== */
+  .desc{
+    margin-top: 10px;
+    display:flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .desc textarea{
+    width: 100%;
+    min-height: 120px;
+    resize: vertical;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    font-weight: 700;
+    outline: none;
+  }
+
+  .desc textarea:focus{
+    border-color:#2563eb;
+    box-shadow: 0 0 0 4px rgba(37,99,235,0.18);
+  }
+
+  .file-row{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
     gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-
-  .timer {
-    font-weight: 800;
-    font-size: 18px;
-    padding: 8px 12px;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.12);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-  }
-
-  .question-card {
-    background: #f9fafb;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
+    padding: 12px 14px;
+    border-radius: 14px;
     border: 1px solid #e5e7eb;
+    background: #f9fafb;
   }
 
-  .question-card p {
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: #111827;
+  .file-row .lbl{
+    font-weight: 900;
+    color:#111827;
   }
 
-  label {
-    display: block;
-    margin-bottom: 6px;
-    cursor: pointer;
-    color: #111827;
+  .file-row input[type="file"]{
+    max-width: 100%;
   }
 
-  textarea {
-    width: 100%;
-    min-height: 90px;
-    resize: vertical;
+  .hint{
+    font-size: 12px;
+    font-weight: 800;
+    color:#6b7280;
+    margin-top: -6px;
   }
 
-  .submit-row {
-    margin-top: 10px;
+  .submit-row{
+    margin-top: 16px;
+    display:flex;
+    justify-content:flex-end;
   }
+
+  .submit-row button{
+    padding: 12px 20px;
+    border-radius: 16px;
+    font-weight: 1000;
+    background: linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:#fff;
+    border:none;
+    cursor:pointer;
+    transition: .2s;
+  }
+
+  .submit-row button:hover{ transform: translateY(-2px); }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="topbar">
-  <h2 style="color:#111827; margin:0;">{{ exam.title }}</h2>
-  <div class="timer">⏳ <span id="timerText">--:--</span></div>
+  <div class="title-wrap">
+    <h2 class="page-title">{{ exam.title }}</h2>
+
+    <p class="subtitle">
+      {% if exam.subject %}
+        <span class="chip subject">📚 {{ exam.subject }}</span>
+      {% endif %}
+      {% if exam.duration %}
+        <span class="chip duration">⏱ {{ exam.duration }} min</span>
+      {% endif %}
+      {% if exam.total_score %}
+        <span class="chip total">🏁 Total: {{ exam.total_score }}</span>
+      {% endif %}
+    </p>
+  </div>
+
+  <div class="timer" aria-live="polite">
+    ⏳ <span id="timerText">--:--</span>
+  </div>
 </div>
 
-<form id="examForm" method="post" enctype="multipart/form-data">
+{# ✅ مهم برای آپلود فایل #}
+<form id="examForm" class="exam-form" method="post" enctype="multipart/form-data">
   {% csrf_token %}
 
   {% for q in exam.questions.all %}
-  <div class="question-card">
-    <p>{{ q.text }}</p>
+    <div class="question-card">
+      <div class="q-head">
+        <div class="q-text">{{ forloop.counter }}. {{ q.text }}</div>
+      </div>
 
-    {% if q.question_type == 'test' %}
-    {% for c in q.choices.all %}
-    <label>
-      <input type="radio" name="question_{{ q.id }}" value="{{ c.id }}" {% if forloop.first %}required{% endif %}>
-      {{ c.text }}
-    </label>
-    {% endfor %}
-    {% else %}
-    <textarea name="text_question_{{ q.id }}" placeholder="Type your answer here..."></textarea>
-    <br><br>
-    <label>Upload file (optional):</label>
-    <input type="file" name="file_question_{{ q.id }}">
-    {% endif %}
-  </div>
+      {% if q.question_type == 'test' %}
+        <div class="options">
+          {% for c in q.choices.all %}
+            <label class="opt">
+              <input type="radio" name="question_{{ q.id }}" value="{{ c.id }}" required>
+              <span>{{ c.text }}</span>
+            </label>
+          {% endfor %}
+        </div>
+
+      {% else %}
+        <div class="desc">
+          <textarea
+            name="text_question_{{ q.id }}"
+            placeholder="Answer here..."
+          ></textarea>
+
+          <div class="file-row">
+            <div>
+              <div class="lbl">📎 Upload file (optional)</div>
+              <div class="hint">pdf / doc / image ...</div>
+            </div>
+            <input type="file" name="file_question_{{ q.id }}">
+          </div>
+        </div>
+      {% endif %}
+    </div>
   {% endfor %}
 
   <div class="submit-row">
@@ -92,33 +286,35 @@
 
 {% block extra_js %}
 <script>
-  (function () {
-    // حتما string default بده که TemplateSyntaxError نگیری
-    let remaining = parseInt("{{ remaining_seconds|default:'0' }}", 10);
-    if (isNaN(remaining)) remaining = 0;
+(function(){
+  let remaining = parseInt("{{ exam.duration|default:'0' }}",10) * 60;
 
-    const timerText = document.getElementById("timerText");
-    const form = document.getElementById("examForm");
+  const timerText = document.getElementById("timerText");
+  const timerBox = document.querySelector(".timer");
 
-    function formatTime(s) {
-      const m = Math.floor(s / 60);
-      const r = s % 60;
-      return String(m).padStart(2, "0") + ":" + String(r).padStart(2, "0");
+  function formatTime(s){
+    const m = Math.floor(s/60);
+    const r = s%60;
+    return String(m).padStart(2,'0') + ":" + String(r).padStart(2,'0');
+  }
+
+  function updateStyle(){
+    timerBox.classList.remove("warn","danger");
+    if(remaining <= 60) timerBox.classList.add("danger");
+    else if(remaining <= 300) timerBox.classList.add("warn");
+  }
+
+  function tick(){
+    timerText.textContent = formatTime(Math.max(0,remaining));
+    updateStyle();
+
+    if(remaining > 0){
+      remaining--;
+      setTimeout(tick,1000);
     }
+  }
 
-    function tick() {
-      timerText.textContent = formatTime(remaining);
-
-      if (remaining <= 0) {
-        try { form.submit(); } catch (e) { }
-        return;
-      }
-
-      remaining -= 1;
-      setTimeout(tick, 1000);
-    }
-
-    tick();
-  })();
+  tick();
+})();
 </script>
 {% endblock %}
