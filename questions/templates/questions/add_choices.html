@@ -1,74 +1,265 @@
+python manage.py migrate
 {% extends "base.html" %}
 {% block title %}Add Choices{% endblock %}
 
 {% block extra_css %}
 <style>
-  body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .container{
+    max-width: 720px;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
   }
 
-  .card {
-    background: white;
-    width: 500px;
-    max-width: 95%;
-    padding: 35px;
+  .card{
+    background: rgba(255,255,255,0.96);
+    border: 1px solid rgba(229,231,235,0.9);
+    border-radius: 18px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.14);
+    overflow: hidden;
+  }
+
+  .card-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 18px 18px 10px;
+    background: linear-gradient(180deg, rgba(243,244,246,0.9), rgba(255,255,255,0));
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .title{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  h2{
+    margin:0;
+    font-size: 22px;
+    font-weight: 900;
+    color:#111827;
+  }
+
+  .sub{
+    margin:0;
+    color:#6b7280;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .back{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    font-weight: 900;
+    font-size: 13px;
+    padding: 10px 12px;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  }
-
-  h2 {
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
-  .back {
-    display: block;
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: 700;
-  }
-
-  .choice-block {
+    background:#f3f4f6;
     border: 1px solid #e5e7eb;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    background: #f9fafb;
+    color:#111827;
+    transition: .15s;
+    white-space: nowrap;
+  }
+  .back:hover{ background:#e5e7eb; }
+
+  .card-body{
+    padding: 18px;
   }
 
-  form p { margin-bottom: 10px; }
+  .errors{
+    background: rgba(239,68,68,0.12);
+    border: 1px solid rgba(239,68,68,0.25);
+    color: #7f1d1d;
+    padding: 12px 14px;
+    border-radius: 16px;
+    font-weight: 900;
+    margin: 0 0 14px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
 
-  button {
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  @media (max-width: 640px){
+    .grid{ grid-template-columns: 1fr; }
+  }
+
+  .choice-block{
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 16px;
+    padding: 14px;
+  }
+
+  .choice-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background:#eef2ff;
+    color:#1d4ed8;
+    border: 1px solid #dbeafe;
+    font-weight: 900;
+    font-size: 12px;
+  }
+
+  .radio{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(37,99,235,0.10);
+    border: 1px solid rgba(37,99,235,0.20);
+    color:#1d4ed8;
+    font-weight: 900;
+    font-size: 12px;
+    cursor:pointer;
+    user-select:none;
+  }
+
+  form p{ margin: 0 0 12px 0; }
+
+  label{
+    display:block;
+    margin-bottom: 8px;
+    font-weight: 900;
+    color:#111827;
+    font-size: 13px;
+  }
+
+  input[type="text"], select, textarea{
+    width:100%;
+    padding: 12px 12px;
+    border-radius: 14px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    background: rgba(255,255,255,0.95);
+    transition: .15s;
+  }
+
+  input:focus, select:focus, textarea:focus{
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.18);
+  }
+
+  input[type="radio"]{
+    width: auto;
+    transform: translateY(1px);
+    cursor:pointer;
+  }
+
+  .actions{
+    margin-top: 14px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
     width: 100%;
-    margin-top: 10px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    font-weight: 900;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .18s;
+  }
+
+  .btn-primary{
+    color:#fff;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    box-shadow: 0 10px 24px rgba(37,99,235,0.22);
+  }
+  .btn-primary:hover{ transform: translateY(-2px); }
+
+  .hint{
+    margin-top: 12px;
+    color:#6b7280;
+    font-size: 12px;
+    font-weight: 800;
   }
 </style>
 {% endblock %}
 
 {% block content %}
   <div class="card">
-    <h2>Add Choices</h2>
+    <div class="card-head">
+      <div class="title">
+        <h2>Add Choices</h2>
+        <p class="sub">
+          For question: <strong>{{ question.text|truncatechars:60 }}</strong>
+        </p>
+      </div>
 
-    <a class="back" href="{% url 'questions:exam_questions' question.exam.id %}">
-      ← Back to Exam
-    </a>
+      <a class="back" href="{% url 'questions:exam_questions' question.exam.id %}">← Back to Exam</a>
+    </div>
 
-    {% if forms %}
-      {% for f in forms %}
-        {% if f.errors %}
-          <div class="errors">{{ f.errors }}</div>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
+    <div class="card-body">
 
-    <form method="post">
-      {% csrf_token %}
-      {% for form in forms %}
-        <div class="choice-block">{{ form.as_p }}</div>
-      {% endfor %}
-      <button type="submit">Save</button>
-    </form>
+      {# خطاهای کلی صفحه #}
+      {% if error %}
+        <div class="errors">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="grid">
+          {% for form in forms %}
+            <div class="choice-block">
+              <div class="choice-head">
+                <span class="badge">Choice {{ forloop.counter }}</span>
+
+                {# ✅ فقط یکی میتونه درست باشه #}
+                <label class="radio">
+                  <input
+                    type="radio"
+                    name="correct_index"
+                    value="{{ forloop.counter0 }}"
+                    required
+                  >
+                  Correct
+                </label>
+              </div>
+
+              {# فقط فیلد text رو نمایش بده #}
+              <label>Text</label>
+              {{ form.text }}
+
+              {% if form.text.errors %}
+                <div class="errors" style="margin-top:10px;">{{ form.text.errors }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">Save Choices</button>
+        </div>
+
+        <div class="hint">Note: Select exactly one “Correct” choice.</div>
+      </form>
+    </div>
   </div>
 {% endblock %}

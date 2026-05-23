@@ -55,7 +55,6 @@ class QuestionsAppTests(TestCase):
             is_published=False,
         )
 
-        # create_question
         res = self.client.post(reverse("questions:create_question", args=[exam.id]), {
             "text": "Q1?",
             "question_type": "test",
@@ -63,7 +62,6 @@ class QuestionsAppTests(TestCase):
         self.assertEqual(res.status_code, 302)
         q = Question.objects.get(exam=exam, text="Q1?")
 
-        # add_choices (4 فرم با prefix)
         res = self.client.post(reverse("questions:add_choices", args=[q.id]), {
             "0-text": "A",
             "0-is_correct": "on",

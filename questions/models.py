@@ -38,7 +38,7 @@ class Exam(models.Model):
     title = models.CharField(max_length=200)
     subject = models.CharField(
         max_length=100,
-        default="General"   # برای رکوردهای قدیمی
+        default="General"   
     )
 
     duration = models.PositiveIntegerField(
@@ -56,7 +56,7 @@ class Exam(models.Model):
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    objects = ExamManager()  # مهم
+    objects = ExamManager()  
 
     def __str__(self):
         return self.title

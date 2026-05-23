@@ -3,131 +3,310 @@
 
 {% block extra_css %}
 <style>
-  h2 {
-    margin-bottom: 20px;
-    font-size: 22px;
+  .page-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-bottom: 18px;
   }
 
-  .actions-top {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
+  .title-wrap h2{
+    margin: 0;
+    font-size: 24px;
+    font-weight: 900;
+    color:#111827;
+    line-height: 1.2;
   }
 
-  .add-btn {
-    display: inline-block;
-    padding: 10px 16px;
-    background: #2563eb;
-    color: white;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
+  .title-wrap a{
+    color:#111827;
+    text-decoration:none;
+  }
+  .title-wrap a:hover{
+    text-decoration: underline;
   }
 
-  .add-btn:hover {
-    background: #1d4ed8;
-  }
-
-  .attempts-btn {
-    display: inline-block;
-    padding: 10px 16px;
-    background: #10b981;
-    color: white;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .attempts-btn:hover {
-    background: #059669;
-  }
-
-  .question-list li {
-    list-style: none;
-    background: #f9fafb;
-    padding: 12px 14px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .q-type {
-    color: #6b7280;
-    font-size: 14px;
-    margin-left: auto;
-    margin-right: 10px;
-  }
-
-  .publish {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 16px;
-    background: #10b981;
-    color: white;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .publish:hover {
-    background: #059669;
-  }
-
-  .published {
-    margin-top: 15px;
-    font-weight: 600;
-    color: #16a34a;
-  }
-
-  .mini {
-    font-size: 14px;
+  .meta{
+    margin-top: 8px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    color:#6b7280;
+    font-size: 13px;
     font-weight: 700;
   }
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background:#f3f4f6;
+    color:#111827;
+    border:1px solid #e5e7eb;
+  }
+  .badge.published{
+    background: rgba(16,185,129,0.12);
+    color:#065f46;
+    border-color: rgba(16,185,129,0.25);
+  }
+  .badge.draft{
+    background: rgba(37,99,235,0.10);
+    color:#1e40af;
+    border-color: rgba(37,99,235,0.22);
+  }
 
-  .danger {
-    color: #ef4444;
+  .actions-top{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding: 11px 14px;
+    border-radius: 14px;
+    text-decoration:none;
+    font-weight: 900;
+    font-size: 14px;
+    border:1px solid transparent;
+    transition: 0.18s;
+    user-select:none;
+  }
+
+  .btn-primary{
+    color:white;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    box-shadow: 0 10px 24px rgba(37,99,235,0.22);
+  }
+  .btn-primary:hover{ transform: translateY(-2px); }
+
+  .btn-success{
+    color:white;
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 0 10px 24px rgba(16,185,129,0.20);
+  }
+  .btn-success:hover{ transform: translateY(-2px); }
+
+  .btn-ghost{
+    background:#f3f4f6;
+    color:#111827;
+    border-color:#e5e7eb;
+  }
+  .btn-ghost:hover{ background:#e5e7eb; }
+
+  .divider{
+    height:1px;
+    background:#e5e7eb;
+    margin: 16px 0 18px;
+  }
+
+  .card{
+    background: rgba(255,255,255,0.96);
+    border: 1px solid rgba(229,231,235,0.9);
+    border-radius: 18px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.12);
+    overflow:hidden;
+  }
+
+  .card-head{
+    padding: 14px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    background: linear-gradient(180deg, rgba(243,244,246,0.9), rgba(255,255,255,0.0));
+  }
+
+  .card-head h3{
+    margin:0;
+    font-size: 15px;
+    font-weight: 900;
+    color:#111827;
+  }
+
+  .q-count{
+    color:#6b7280;
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  .question-list{
+    margin: 0;
+    padding: 0;
+  }
+
+  .question-item{
+    list-style:none;
+    padding: 14px 16px;
+    display:flex;
+    gap: 12px;
+    align-items:flex-start;
+    justify-content:space-between;
+    border-top:1px solid #e5e7eb;
+  }
+
+  .q-left{
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .q-text{
+    font-weight: 800;
+    color:#111827;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .q-tags{
+    display:flex;
+    gap: 8px;
+    flex-wrap:wrap;
+  }
+
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+    border:1px solid #e5e7eb;
+    background:#f9fafb;
+    color:#374151;
+  }
+  .tag.test{
+    background: rgba(37,99,235,0.10);
+    border-color: rgba(37,99,235,0.22);
+    color:#1e40af;
+  }
+  .tag.desc{
+    background: rgba(245,158,11,0.12);
+    border-color: rgba(245,158,11,0.28);
+    color:#92400e;
+  }
+
+  .q-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-shrink:0;
+  }
+
+  .mini{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding: 9px 12px;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 13px;
+    text-decoration:none;
+    background:#f3f4f6;
+    color:#111827;
+    border:1px solid #e5e7eb;
+    transition: 0.15s;
+  }
+  .mini:hover{ background:#e5e7eb; }
+
+  .mini.danger{
+    background: rgba(239,68,68,0.10);
+    border-color: rgba(239,68,68,0.25);
+    color:#991b1b;
+  }
+  .mini.danger:hover{
+    background: rgba(239,68,68,0.18);
+  }
+
+  .footer-actions{
+    margin-top: 16px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+
+  .published-text{
+    font-weight: 900;
+    color:#16a34a;
+  }
+
+  .empty{
+    padding: 16px;
+    color:#6b7280;
+    font-weight: 800;
   }
 </style>
 {% endblock %}
 
 {% block content %}
-  <h2>
-    <a href="{% url 'questions:dashboard' %}">{{ exam.title }}</a>
-  </h2>
+  <div class="page-head">
+    <div class="title-wrap">
+      <h2><a href="{% url 'questions:dashboard' %}">{{ exam.title }}</a></h2>
+      <div class="meta">
+        <span class="badge">📚 {{ exam.subject }}</span>
+        <span class="badge">⏱ {{ exam.duration }} min</span>
+        <span class="badge">🏁 {{ exam.total_score }} pts</span>
+        {% if exam.is_published %}
+          <span class="badge published">✅ Published</span>
+        {% else %}
+          <span class="badge draft">🟦 Draft</span>
+        {% endif %}
+      </div>
+    </div>
 
-  <div class="actions-top">
-    <a class="add-btn" href="{% url 'questions:create_question' exam.id %}">
-      + Add Question
-    </a>
-
-    <a class="attempts-btn" href="{% url 'exams:exam_attempts' exam.id %}">
-      View Attempts
-    </a>
+    <div class="actions-top">
+      <a class="btn btn-primary" href="{% url 'questions:create_question' exam.id %}">➕ Add Question</a>
+      <a class="btn btn-success" href="{% url 'exams:exam_attempts' exam.id %}">📄 View Attempts</a>
+      <a class="btn btn-ghost" href="{% url 'questions:dashboard' %}">← Dashboard</a>
+    </div>
   </div>
 
-  <ul class="question-list">
-    {% for q in exam.questions.all %}
-      <li>
-        <span>{{ q.text }}</span>
-        <span class="q-type">{{ q.question_type }}</span>
+  <div class="card">
+    <div class="card-head">
+      <h3>Questions</h3>
+      <div class="q-count">{{ exam.questions.count }} total</div>
+    </div>
 
-        <a class="mini" href="{% url 'questions:edit_question' q.id %}">✏️ Edit</a>
-        <a class="mini danger"
-           href="{% url 'questions:delete_question' q.id %}"
-           onclick="return confirm('Are you sure?')">🗑 Delete</a>
-      </li>
-    {% endfor %}
-  </ul>
+    <ul class="question-list">
+      {% for q in exam.questions.all %}
+        <li class="question-item">
+          <div class="q-left">
+            <div class="q-text">{{ q.text }}</div>
+            <div class="q-tags">
+              {% if q.question_type == "test" %}
+                <span class="tag test">🧩 Test</span>
+              {% else %}
+                <span class="tag desc">📝 Descriptive</span>
+              {% endif %}
+            </div>
+          </div>
 
-  {% if not exam.is_published %}
-    <a class="publish" href="{% url 'questions:publish_exam' exam.id %}">
-      Publish Exam
-    </a>
-  {% else %}
-    <p class="published">✅ Published</p>
-  {% endif %}
+          <div class="q-actions">
+            <a class="mini" href="{% url 'questions:edit_question' q.id %}">✏️ Edit</a>
+            <a class="mini danger"
+               href="{% url 'questions:delete_question' q.id %}"
+               onclick="return confirm('Are you sure?')">🗑 Delete</a>
+          </div>
+        </li>
+      {% empty %}
+        <div class="empty">No questions yet. Click “Add Question”.</div>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="footer-actions">
+    {% if not exam.is_published %}
+      <a class="btn btn-success" href="{% url 'questions:publish_exam' exam.id %}">🚀 Publish Exam</a>
+    {% else %}
+      <span class="published-text">✅ This exam is published</span>
+    {% endif %}
+  </div>
 {% endblock %}

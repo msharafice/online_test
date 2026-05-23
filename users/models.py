@@ -33,7 +33,6 @@ class User(AbstractUser):
     email_code = models.CharField(max_length=6, null=True, blank=True)
     is_email_verified = models.BooleanField(default=False)
 
-    # ایمیل رو واقعی‌تر کنیم
     email = models.EmailField(unique=True)
 
     objects = UserManager()

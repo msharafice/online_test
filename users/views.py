@@ -13,6 +13,12 @@ import logging
 logger = logging.getLogger("users")
 
 
+@login_required
+def profile_view(request):
+    user = request.user
+    logger.info(f"Profile opened user_id={user.id} username={user.username} role={getattr(user, 'role', None)}")
+    return render(request, "users/profile.html", {"user_obj": user})
+
 def signup_view(request):
     error = None
 
@@ -156,10 +162,12 @@ def custom_logout(request):
 
 @login_required
 def redirect_view(request):
-    # این روت فقط جهت هدایت بعد از لاگین هست
     if request.user.is_teacher():
         logger.info(f"Redirect teacher user_id={request.user.id}")
         return redirect("questions:dashboard")
 
     logger.info(f"Redirect student user_id={request.user.id}")
     return redirect("exams:student_dashboard")
+
+
+

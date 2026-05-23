@@ -1,81 +1,210 @@
 {% extends "base.html" %}
 {% block title %}Signup{% endblock %}
+{% block container_class %}page-center{% endblock %}
 
 {% block extra_css %}
 <style>
-  .signup-card {
-    background: white;
-    padding: 40px;
-    width: 380px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    margin: 0 auto;
-  }
-
-  h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #1f2937;
-  }
-
-  form p {
-    margin-bottom: 15px;
-  }
-
-  button {
+  .card{
+    max-width: 520px;
     width: 100%;
-    margin-top: 10px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.96);
+    border: 1px solid rgba(229,231,235,0.9);
+    border-radius: 18px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.14);
+    overflow: hidden;
   }
 
-  .login-link {
+  .card-head{
+    padding: 22px 18px 16px;
+    background: linear-gradient(180deg, rgba(243,244,246,0.9), rgba(255,255,255,0));
+    border-bottom: 1px solid #e5e7eb;
     text-align: center;
-    margin-top: 15px;
+  }
+
+  .card-head h2{
+    margin:0;
+    color:#111827;
+    font-weight: 900;
+    font-size: 26px;
+  }
+
+  .sub{
+    margin-top: 8px;
+    color:#6b7280;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .card-body{
+    padding: 22px;
+  }
+
+  form p{
+    margin: 0 0 14px 0;
+  }
+
+  label{
+    display:block;
+    margin-bottom: 8px;
+    font-weight: 900;
+    color:#111827;
+    font-size: 13px;
+  }
+
+  input, select{
+    width:100%;
+    padding: 12px;
+    border-radius: 14px;
+    border: 1px solid #d1d5db;
     font-size: 14px;
+    background: rgba(255,255,255,0.95);
+    transition: .15s;
   }
 
-  .login-link a {
-    color: #2563eb;
-    text-decoration: none;
-    font-weight: 700;
+  input:focus, select:focus{
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.18);
   }
 
-  .login-link a:hover {
-    text-decoration: underline;
+  .btn{
+    width:100%;
+    padding: 13px;
+    border-radius: 14px;
+    border: none;
+    font-weight: 900;
+    font-size: 15px;
+    cursor: pointer;
+    transition: .18s;
+    margin-top: 6px;
   }
 
-  .error-text {
-    margin-top: 10px;
-    color: red;
+  .btn-primary{
+    color:#fff;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    box-shadow: 0 10px 24px rgba(37,99,235,0.22);
+  }
+
+  .btn-primary:hover{
+    transform: translateY(-2px);
+  }
+
+  .hint{
+    margin-top: 12px;
+    color:#6b7280;
+    font-size: 12px;
+    font-weight: 800;
     text-align: center;
-    font-weight: 700;
+  }
+
+  .error-text{
+    margin-top: 14px;
+    color:#991b1b;
+    font-weight: 900;
+    text-align:center;
+    background:#fee2e2;
+    border:1px solid #fecaca;
+    padding: 10px 12px;
+    border-radius: 14px;
+  }
+
+  .links{
+    margin-top: 18px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    font-weight: 800;
+    color:#6b7280;
+  }
+
+  .links a{
+    color:#2563eb;
+    text-decoration:none;
+    font-weight: 900;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background:#f3f4f6;
+    border: 1px solid #e5e7eb;
+    transition: .15s;
+  }
+
+  .links a:hover{
+    background:#e5e7eb;
+  }
+
+  .code-row{
+    display:flex;
+    gap:10px;
+  }
+
+  .code-row input{
+    text-align:center;
+    letter-spacing: 2px;
+    font-weight: 900;
   }
 </style>
 {% endblock %}
 
 {% block content %}
-  <div class="signup-card">
+<div class="card">
+  <div class="card-head">
     <h2>Signup</h2>
+    <div class="sub">
+      {% if not show_code_form %}
+        Create your account
+      {% else %}
+        Verify your email
+      {% endif %}
+    </div>
+  </div>
 
+  <div class="card-body">
     {% if not show_code_form %}
+
+      {% if form.errors %}
+        <div class="errors">{{ form.errors }}</div>
+      {% endif %}
+
       <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Register</button>
+        <button class="btn btn-primary" type="submit">Register</button>
       </form>
+
+      <div class="hint">
+        After registration, we’ll send a verification code to your email.
+      </div>
+
     {% else %}
+
       <form method="post">
         {% csrf_token %}
-        <input type="text" name="code" placeholder="Enter email code" required>
-        <button type="submit">Verify</button>
+
+        <div class="code-row">
+          <input type="text" name="code" placeholder="Enter email code" required>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Verify</button>
 
         {% if error %}
           <div class="error-text">{{ error }}</div>
         {% endif %}
       </form>
+
+      <div class="hint">
+        Check your inbox (and spam folder) for the verification code.
+      </div>
+
     {% endif %}
 
-    <div class="login-link">
+    <div class="links">
+      <span>Already have an account?</span>
       <a href="{% url 'users:login' %}">Login</a>
     </div>
+
   </div>
+</div>
 {% endblock %}

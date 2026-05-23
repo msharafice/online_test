@@ -1,119 +1,278 @@
 <!doctype html>
-<html lang="fa">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% block title %}Online Test{% endblock %}</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg1:#0b1f4a;
+      --bg2:#2563eb;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --primary:#2563eb;
+      --primary2:#1d4ed8;
+      --danger:#ef4444;
+      --danger2:#dc2626;
+      --shadow: 0 18px 55px rgba(0,0,0,.22);
+      --shadow2: 0 10px 28px rgba(0,0,0,.16);
+      --r12: 12px;
+      --r16: 16px;
+      --r18: 18px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
       font-family: "Segoe UI", Tahoma, sans-serif;
     }
 
-    body {
+    /* ✅ مهم: padding رو از body برداشتم تا وسط‌چین دقیق شه */
+    body{
+      min-height:100vh;
+      background:
+        radial-gradient(1200px 600px at 15% 10%, rgba(255,255,255,.18), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(255,255,255,.14), transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+    }
+
+    /* ✅ کل صفحه داخل wrapper با padding کنترل میشه */
+    .shell{
+      max-width: 1100px;
+      margin: 0 auto;
       min-height: 100vh;
-      background: linear-gradient(135deg, #1e3a8a, #2563eb); /* آبی قبلی */
-      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      padding: 34px 18px 20px;
     }
 
     /* ---------- Navbar ---------- */
-    .navbar {
-      max-width: 1100px;
-      margin: 0 auto 25px auto;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 14px;
-      padding: 16px 24px;
-      display: flex;
+    .navbar{
+      display:flex;
       justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      align-items:center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: var(--r18);
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(229,231,235,0.85);
+      box-shadow: var(--shadow2);
+      backdrop-filter: blur(10px);
     }
 
-    .navbar .logo {
-      font-size: 20px;
-      font-weight: 700;
-      color: #1e3a8a;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 210px;
     }
 
-    .navbar .menu a {
-      margin-left: 18px;
-      color: #1f2937;
-      font-weight: 600;
-      font-size: 14px;
-      text-decoration: none;
+    .brand-badge{
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 1000;
+      color:#fff;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      box-shadow: 0 10px 24px rgba(37,99,235,.24);
+      user-select:none;
     }
 
-    .navbar .menu a:hover {
-      color: #2563eb;
+    .brand-title{
+      display:flex;
+      flex-direction:column;
+      gap: 2px;
+      line-height: 1.1;
+    }
+
+    .brand-title strong{
+      font-size: 15px;
+      font-weight: 1000;
+      color:#0f172a;
+      letter-spacing: .2px;
+    }
+
+    .brand-title span{
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .menu{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-link{
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(229,231,235,0.9);
+      background: rgba(255,255,255,0.9);
+      color:#111827;
+      font-weight: 900;
+      font-size: 13px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      transition: .18s;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .nav-link:hover{
+      transform: translateY(-1px);
+      border-color: rgba(37,99,235,0.35);
+      box-shadow: 0 12px 26px rgba(0,0,0,.10);
+      text-decoration:none;
+    }
+
+    .nav-primary{
+      color:#fff;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-color: transparent;
+      box-shadow: 0 10px 24px rgba(37,99,235,.22);
+    }
+
+    .nav-danger{
+      color:#fff;
+      background: linear-gradient(135deg, var(--danger), var(--danger2));
+      border-color: transparent;
+      box-shadow: 0 10px 24px rgba(239,68,68,.18);
     }
 
     /* ---------- Main container ---------- */
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      background: white;
-      padding: 35px;
-      border-radius: 16px;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.3);
+    .container{
+      margin-top: 18px;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid rgba(229,231,235,0.85);
+      padding: 28px;
+      border-radius: var(--r18);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
     }
 
-    h2, h3 {
-      color: #1f2937;
+    /* ✅ برای login/signup: این container کل فضای بین navbar و footer رو می‌گیره */
+    .container.page-center{
+      flex: 1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+    }
+
+    h2, h3{
+      color:#111827;
       margin-bottom: 12px;
     }
 
-    a {
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: 600;
+    a{
+      color: var(--primary);
+      text-decoration:none;
+      font-weight: 900;
     }
 
-    a:hover {
+    a:hover{
       text-decoration: underline;
     }
 
-    button {
+    button{
       padding: 10px 18px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 15px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color:#fff;
+      border:none;
+      border-radius: 14px;
+      cursor:pointer;
+      font-size: 14px;
+      font-weight: 1000;
+      box-shadow: 0 12px 26px rgba(37,99,235,.20);
+      transition: .18s;
     }
 
-    button:hover {
-      background: #1d4ed8;
+    button:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.02);
     }
 
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
+    input, select, textarea{
+      width:100%;
+      padding: 11px 12px;
+      border-radius: 14px;
       border: 1px solid #d1d5db;
       font-size: 14px;
+      font-weight: 800;
+      background: rgba(255,255,255,0.95);
+      color:#111827;
     }
 
-    input:focus,
-    select:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    input:focus, select:focus, textarea:focus{
+      outline:none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.18);
     }
 
-    .errors {
+    .errors{
       background: #fee2e2;
       color: #991b1b;
       padding: 10px 14px;
-      border-radius: 10px;
+      border-radius: 16px;
       border: 1px solid #fecaca;
       margin-bottom: 15px;
       font-size: 14px;
+      font-weight: 900;
+    }
+
+    /* ---------- Footer ---------- */
+    .footer{
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: var(--r18);
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: rgba(255,255,255,0.9);
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      gap: 12px;
+      flex-wrap: wrap;
+      box-shadow: 0 14px 32px rgba(0,0,0,.12);
+    }
+
+    .footer small{
+      font-weight: 900;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .footer a{
+      color: rgba(255,255,255,0.95);
+      text-decoration:none;
+      font-weight: 1000;
+    }
+
+    .footer a:hover{
+      text-decoration: underline;
+    }
+
+    @media (max-width: 520px){
+      .shell{ padding: 24px 12px 16px; }
+      .container{ padding: 18px; }
+      .brand{ min-width: auto; }
+      .brand-title span{ display:none; }
     }
   </style>
 
@@ -121,28 +280,53 @@
 </head>
 
 <body>
+  <div class="shell">
 
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="logo">Online Test System</div>
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="brand">
+        <div class="brand-badge">OT</div>
+        <div class="brand-title">
+          <strong>Online Test System</strong>
+          <span>Exams • Questions • Grading</span>
+        </div>
+      </div>
 
-    <div class="menu">
-      {% if user.is_authenticated %}
-        {% if user.is_teacher %}
-          <a href="{% url 'questions:dashboard' %}">Dashboard</a>
+      <div class="menu">
+        {% if user.is_authenticated %}
+          {% if user.is_teacher %}
+            <a class="nav-link nav-primary" href="{% url 'questions:dashboard' %}">📊 Dashboard</a>
+          {% else %}
+            <a class="nav-link nav-primary" href="{% url 'exams:student_dashboard' %}">📝 Exams</a>
+          {% endif %}
+
+          <a class="nav-link" href="{% url 'users:profile' %}">👤 Profile</a>
+
+          <form action="{% url 'users:logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button class="nav-link nav-danger" type="submit" style="border:none;">🚪 Logout</button>
+          </form>
         {% else %}
-          <a href="{% url 'exams:student_dashboard' %}">Exams</a>
+          <a class="nav-link nav-primary" href="{% url 'users:login' %}">🔑 Login</a>
+          <a class="nav-link" href="{% url 'users:signup' %}">✨ Signup</a>
         {% endif %}
-        <a href="{% url 'users:logout' %}">Logout</a>
-      {% else %}
-        <a href="{% url 'users:login' %}">Login</a>
-        <a href="{% url 'users:signup' %}">Signup</a>
-      {% endif %}
+      </div>
     </div>
-  </div>
 
-  <div class="container">
-    {% block content %}{% endblock %}
+    <!-- ✅ login/signup فقط این class رو میدن -->
+    <div class="container {% block container_class %}{% endblock %}">
+      {% block content %}{% endblock %}
+    </div>
+
+    <div class="footer">
+      <small>© {% now "Y" %} Online Test System. All rights reserved.</small>
+      <small>
+        Built with Django •
+        <a href="#">Privacy</a> •
+        <a href="#">Terms</a>
+      </small>
+    </div>
+
   </div>
 
   {% block extra_js %}{% endblock %}
